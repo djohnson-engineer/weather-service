@@ -1,8 +1,7 @@
 package interfaces
 
-import "weather-server/src/domain"
+import "weather-server/src/models"
 
-// Defines the contract for the weather forecast service
 type IWeatherService interface {
-	GetForecast(lat, lon string) (*domain.WeatherResponse, error)
+	GetForecast(lat, lon string) (*models.GetForecastResponse, error)
 }

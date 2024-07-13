@@ -13,7 +13,6 @@ import (
 //	@Summary	Get weather forecaset
 //	@Schemes
 //	@Tags		forecast
-//	@Security	Authorization
 //	@Accept		json
 //	@Produce	json
 //	@Param		latitude	path		string	true	"Latitude"
@@ -23,13 +22,11 @@ import (
 //	@Failure	404		{object}	Response
 //	@Router		/forecast?latitude={latitude}&longitude={longitude} [get]
 func (s *Server) GetWeatherForecast(c *gin.Context) {
-	// latitude := c.Param("latitude")
-	// longitude := c.Param("longitude")
-
 	lat := c.Query("latitude")
 	lon := c.Query("longitude")
 
-	if lat == "" || lon == "" {
+	//TODO common validation library
+	if len(lat) == 0 || len(lon) == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Latitude and longitude are required"})
 		return
 	}
@@ -39,11 +36,16 @@ func (s *Server) GetWeatherForecast(c *gin.Context) {
 	//TODO need to evaluate various status codes depending on the error/issue
 	response, err := forecaster.GetForecast(lat, lon)
 	if err != nil {
-		logger.LogError(c, "error getting forecast: %s", err.Error())
+		logger.Log(logger.Error, "error getting forecast: %s", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	if response == nil {
+		logger.Log(logger.Warning, "no forecast found for Latitude: %s, Longitude: %s.", lat, lon)
+		c.JSON(http.StatusNoContent, nil)
+		return
+	}
 
-	logger.LogInfo(c, "successfully returned forecast for %s,%s: '%s'", lat, lon, response)
+	logger.Log(logger.Info, "successfully returned forecast for Latitude: %s, Longitude: %s: '%s'", lat, lon, *response)
 	c.JSON(http.StatusOK, response)
 }

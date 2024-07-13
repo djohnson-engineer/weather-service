@@ -1,29 +1,45 @@
 package logger
 
 import (
-	"context"
 	"fmt"
 )
 
 //TODO use a real logging library
 //TODO consider any headers that might be useful to log
 
+var (
+	logFunc func(string, ...any) (n int, err error)
+)
+
 func init() {
-	//init logging library
+	logFunc = fmt.Printf
 }
 
-func LogInfo(ctx context.Context, message string, v ...interface{}) {
-	log(ctx, message, "INFO", v)
+type LogType int
+
+const (
+	Info LogType = iota
+	Debug
+	Warning
+	Error
+)
+
+func (lt LogType) ToString() string {
+	switch lt {
+	case Info:
+		return "INFO"
+	case Debug:
+		return "DEBUG"
+	case Warning:
+		return "WARNING"
+	case Error:
+		return "ERROR"
+	default:
+		//TODO should not stop the service or panic, but should alert end users to address and fix
+		return "INVALID_LOG_TYPE"
+	}
 }
 
-func LogWarn(ctx context.Context, message string, v ...interface{}) {
-	log(ctx, message, "WARN", v)
-}
-
-func LogError(ctx context.Context, message string, v ...interface{}) {
-	log(ctx, message, "ERROR", v)
-}
-
-func log(ctx context.Context, message string, messageType string, v ...interface{}) {
-	fmt.Printf(messageType+": "+message, v...)
+func Log(logType LogType, message string, v ...interface{}) {
+	logFunc(logType.ToString()+": "+message, v...)
 }

@@ -43,12 +43,12 @@ func (_m *IForecast) GetForecastURL(lat string, lon string) (*string, error) {
 	return r0, r1
 }
 
-// GetWeatherData provides a mock function with given fields: forecastURL
-func (_m *IForecast) GetWeatherData(forecastURL string) (*domain.WeatherForecast, error) {
+// GetWeatherForecast provides a mock function with given fields: forecastURL
+func (_m *IForecast) GetWeatherForecast(forecastURL string) (*domain.WeatherForecast, error) {
 	ret := _m.Called(forecastURL)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetWeatherData")
+		panic("no return value specified for GetWeatherForecast")
 	}
 
 	var r0 *domain.WeatherForecast

@@ -19,8 +19,6 @@ var (
 // @name						Authorization
 // @description				Enter your OAuth Access Token here (prefix with 'bearer ')
 func main() {
-	// logger.LogInfo(context.Background(), "Starting weather-svc")
-
 	// Dependency Injection
 	config()
 
@@ -32,8 +30,7 @@ func main() {
 	// TODO Initialize and Configure Cache
 
 	hostAndPort := app.Config().ServiceHost + ":" + app.Config().ServicePort
-	logger.LogInfo(context.Background(), "Starting weather-svc; URL is 'https://%s%s.com/api/weather/forecast/v1/'",
-		hostAndPort, app.Config().ServicePath) //TODO missing service path
+	logger.Log(logger.Info, "Starting weather-svc; URL is 'http://%s%s'", hostAndPort, app.Config().ServicePath)
 
 	// Start Server
 	if err := server.Start(newRouter, hostAndPort); err != nil {
@@ -41,7 +38,7 @@ func main() {
 	}
 }
 
-// configureServices initializes the app services using dependency injection.
+// configureServices initializes the app services using dependency injection
 func configureServices() {
 	appContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -54,13 +51,3 @@ func configureServices() {
 	app.Initialize(instance)
 	app.Configure()
 }
-
-// func main() {
-// 	r := gin.Default()
-// 	r.GET("/weather", weatherHandler)
-// 	port := os.Getenv("PORT")
-// 	if port == "" {
-// 		port = "8080"
-// 	}
-// 	r.Run(":" + port)
-// }

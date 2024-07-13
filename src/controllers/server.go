@@ -8,20 +8,17 @@ import (
 
 // Server serves HTTP requests.
 type Server struct {
-	// managers interfaces.IManagerProvider
 }
 
-func NewServer(
-// managers interfaces.IManagerProvider,
-) *Server {
+func NewServer() *Server {
 	return &Server{
-		// managers: managers,
+		// TODO interface implementations here
 	}
 }
 
 var _ interfaces.IServer = &Server{}
 
-// Start runs the HTTP server on a specific address.
+// Start runs the HTTP server on a specific address
 func (*Server) Start(router *gin.Engine, address string) error {
 	return router.Run(address)
 }

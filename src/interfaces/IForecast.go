@@ -2,8 +2,8 @@ package interfaces
 
 import "weather-server/src/domain"
 
-// Defines the contract for fetching weather data from the third-party API
+// Defines the contract for fetching weather data from various datasources
 type IForecast interface {
 	GetForecastURL(lat, lon string) (*string, error)
-	GetWeatherData(forecastURL string) (*domain.WeatherForecast, error)
+	GetWeatherForecast(forecastURL string) (*domain.WeatherForecast, error)
 }

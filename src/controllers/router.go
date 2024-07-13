@@ -16,6 +16,7 @@ func (*Router) GetRouter() *gin.Engine {
 func (*Router) NewRouter(r *gin.Engine, server interfaces.IServer) *gin.Engine {
 	baseUrl := "/api/weather/v1/"
 	router := r.Group(baseUrl)
+
 	//TODO auth layer
 
 	// Health API
@@ -25,8 +26,8 @@ func (*Router) NewRouter(r *gin.Engine, server interfaces.IServer) *gin.Engine {
 	router.GET("/forecast", server.GetWeatherForecast)
 
 	// Docs API
-	// TODO need a simple swagger/UI endpoint
-	// router.GET("/docs/*any", <insert-swagger>)
+	// TODO need a simple documentation endpoint (e.g. swagger)
+	// router.GET("/docs/*any", <insert-doc-endpoint>)
 
 	return r
 }

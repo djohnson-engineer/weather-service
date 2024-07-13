@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	domain "weather-server/src/domain"
+	models "weather-server/src/models"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -14,23 +14,23 @@ type IWeatherService struct {
 }
 
 // GetForecast provides a mock function with given fields: lat, lon
-func (_m *IWeatherService) GetForecast(lat string, lon string) (*domain.WeatherResponse, error) {
+func (_m *IWeatherService) GetForecast(lat string, lon string) (*models.GetForecastResponse, error) {
 	ret := _m.Called(lat, lon)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetForecast")
 	}
 
-	var r0 *domain.WeatherResponse
+	var r0 *models.GetForecastResponse
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string, string) (*domain.WeatherResponse, error)); ok {
+	if rf, ok := ret.Get(0).(func(string, string) (*models.GetForecastResponse, error)); ok {
 		return rf(lat, lon)
 	}
-	if rf, ok := ret.Get(0).(func(string, string) *domain.WeatherResponse); ok {
+	if rf, ok := ret.Get(0).(func(string, string) *models.GetForecastResponse); ok {
 		r0 = rf(lat, lon)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*domain.WeatherResponse)
+			r0 = ret.Get(0).(*models.GetForecastResponse)
 		}
 	}
 

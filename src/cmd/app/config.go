@@ -41,6 +41,7 @@ func Configure() {
 	config = &AppConfig{
 		ServiceHost:                  getEnvVal(env, "HOST", defaultHost),
 		ServicePort:                  getEnvVal(env, "PORT", defaultPort),
+		ServicePath:                  defaultServicePath,
 		NationalWeatherServiceApiURL: nwsAPIURL,
 		UserAgent:                    userAgent,
 	}

@@ -1,4 +1,4 @@
-package thirdparty
+package datasource
 
 import (
 	"encoding/json"
@@ -7,10 +7,6 @@ import (
 	"weather-server/src/cmd/app"
 	"weather-server/src/domain"
 )
-
-func setUserAgent(req *http.Request) {
-	req.Header.Set("User-Agent", app.Config().UserAgent)
-}
 
 type WeatherGovAPI struct{}
 
@@ -37,7 +33,11 @@ func (api *WeatherGovAPI) GetForecastURL(lat, lon string) (*string, error) {
 
 	/*
 		Source: https://www.weather.gov/documentation/services-web-api
-		Note: Applications may cache the grid for a location to improve latency and reduce the additional lookup request; however, it is important to note that while it generally does not occur often, the gridX and gridY values (and even the office) for a given coordinate may occasionally change. For this reason, it is necessary to check back to the /points endpoint periodically for the latest office/grid mapping
+		Note: Applications may cache the grid for a location to improve latency and reduce the additional lookup
+		request; however, it is important to note that while it generally does not occur often,
+		the gridX and gridY values (and even the office) for a given coordinate may occasionally change.
+		For this reason, it is necessary to check back to the /points endpoint periodically for the latest
+		office/grid mapping
 	*/
 
 	var pointsResponse natWeatherServicePointsResponse
@@ -48,23 +48,7 @@ func (api *WeatherGovAPI) GetForecastURL(lat, lon string) (*string, error) {
 	return &pointsResponse.Properties.Forecast, nil
 }
 
-type natWeatherServicePointsResponse struct {
-	Properties struct {
-		Forecast string `json:"forecast"`
-	} `json:"properties"`
-}
-
-type natWeatherForecastResponse struct {
-	Properties struct {
-		Periods []struct {
-			Name          string `json:"name"`
-			Temperature   int    `json:"temperature"`
-			ShortForecast string `json:"shortForecast"`
-		} `json:"periods"`
-	} `json:"properties"`
-}
-
-func (api *WeatherGovAPI) GetWeatherData(forecastURL string) (*domain.WeatherForecast, error) {
+func (api *WeatherGovAPI) GetWeatherForecast(forecastURL string) (*domain.WeatherForecast, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", forecastURL, nil)
 	if err != nil {
@@ -97,4 +81,24 @@ func (api *WeatherGovAPI) GetWeatherData(forecastURL string) (*domain.WeatherFor
 		Temperature:   todayForecast.Temperature,
 		ShortForecast: todayForecast.ShortForecast,
 	}, nil
+}
+
+func setUserAgent(req *http.Request) {
+	req.Header.Set("User-Agent", app.Config().UserAgent)
+}
+
+type natWeatherServicePointsResponse struct {
+	Properties struct {
+		Forecast string `json:"forecast"`
+	} `json:"properties"`
+}
+
+type natWeatherForecastResponse struct {
+	Properties struct {
+		Periods []struct {
+			Name          string `json:"name"`
+			Temperature   int    `json:"temperature"`
+			ShortForecast string `json:"shortForecast"`
+		} `json:"periods"`
+	} `json:"properties"`
 }

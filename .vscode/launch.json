@@ -8,11 +8,8 @@
             "mode": "auto",
             "program": "${workspaceFolder}/src/cmd/main.go",
             "env": {
-                "Redis_URL": "127.0.0.1:6379",
                 "PORT": "8950",
                 "HOST": "0.0.0.0",
-                "ENVIRONMENT": "local",
-                "REGION": "us-east-1",
             },
             "args": [],
             "cwd": "${workspaceFolder}",
