@@ -6,8 +6,8 @@ type WeatherResponse struct {
 	TemperatureType string `json:"temperature_type"`
 }
 
-// WeatherData represents the raw weather data from an external API.
-type WeatherData struct {
+// WeatherForecast represents the raw weather data from an external API.
+type WeatherForecast struct {
 	Temperature   int    `json:"temperature"`
 	ShortForecast string `json:"short_forecast"`
 }
